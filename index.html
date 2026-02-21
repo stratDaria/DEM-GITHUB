@@ -14,3 +14,952 @@
 
 </body>
 </html>
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Мой Блог | Daria's Space</title>
+  
+  <!-- Подключение шрифтов (Google Fonts для надежности, так как локальные файлы не доступны) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;500;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-red: #ff4757;
+      --dark-red: #c0392b;
+      --primary-yellow: #ffa502;
+      --soft-yellow: #fff2cc;
+      --bg-gradient: linear-gradient(135deg, #fff9c4 0%, #ffecb3 100%);
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --text-main: #2d3436;
+      --shadow-soft: 0 10px 30px rgba(255, 71, 87, 0.15);
+      --shadow-hover: 0 20px 40px rgba(255, 71, 87, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Nunito', 'Comfortaa', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 0;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Анимации */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Хедер */
+    header {
+      text-align: center;
+      padding: 80px 20px 40px;
+      position: relative;
+    }
+
+    h1 {
+      font-family: 'Comfortaa', cursive;
+      font-size: 3.5rem;
+      color: var(--primary-red);
+      text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--dark-red);
+      opacity: 0.8;
+      font-weight: 700;
+    }
+
+    /* Контейнер ленты */
+    .timeline {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Линия времени */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary-yellow), var(--primary-red));
+      border-radius: 2px;
+      z-index: 0;
+    }
+
+    /* Карточка поста */
+    .post {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 50px;
+      position: relative;
+      width: 45%;
+      box-shadow: var(--shadow-soft);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      opacity: 0; /* Для JS анимации */
+      animation: none; /* JS добавит анимацию */
+      border: 2px solid transparent;
+      backdrop-filter: blur(10px);
+    }
+
+    .post:hover {
+      transform: scale(1.03) translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary-yellow);
+    }
+
+    .post:nth-child(odd) {
+      left: 0;
+      margin-right: auto;
+    }
+
+    .post:nth-child(even) {
+      left: 55%;
+      margin-left: auto;
+    }
+
+    /* Точка на линии */
+    .post::after {
+      content: '📍';
+      position: absolute;
+      top: 20px;
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border: 4px solid var(--primary-red);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      z-index: 1;
+      box-shadow: 0 0 0 4px var(--soft-yellow);
+    }
+
+    .post:nth-child(odd)::after {
+      right: -60px;
+    }
+
+    .post:nth-child(even)::after {
+      left: -60px;
+    }
+
+    /* Дата */
+    .date-badge {
+      display: inline-block;
+      background: var(--primary-red);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4);
+    }
+
+    h2, h3 {
+      color: var(--dark-red);
+      margin-bottom: 10px;
+      font-family: 'Comfortaa', cursive;
+    }
+
+    p {
+      margin-bottom: 15px;
+      font-size: 1.05rem;
+    }
+
+    a {
+      color: var(--primary-red);
+      text-decoration: none;
+      font-weight: 700;
+      border-bottom: 2px dashed var(--primary-yellow);
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: var(--dark-red);
+      border-bottom-style: solid;
+    }
+
+    blockquote {
+      background: var(--soft-yellow);
+      border-left: 5px solid var(--primary-yellow);
+      margin: 20px 0;
+      padding: 15px;
+      font-style: italic;
+      border-radius: 0 10px 10px 0;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 15px;
+      margin: 15px 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    
+    img:hover {
+      transform: scale(1.02);
+    }
+
+    /* Стили для калькулятора RSA */
+    .rsa-container {
+      background: #fff;
+      border: 2px solid var(--primary-yellow);
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .rsa-input-group {
+      margin-bottom: 15px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary-red);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-family: 'Nunito', sans-serif;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .btn-encrypt {
+      background: var(--primary-red);
+      color: white;
+    }
+
+    .btn-decrypt {
+      background: var(--primary-yellow);
+      color: var(--dark-red);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    #output {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      margin-top: 15px;
+      color: #333;
+      border-left: 4px solid var(--primary-red);
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+      .timeline::before {
+        left: 20px;
+      }
+      
+      .post {
+        width: 100%;
+        left: 0 !important;
+        margin-left: 40px !important;
+        margin-right: 0 !important;
+      }
+
+      .post::after {
+        left: -54px !important;
+        right: auto !important;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+    }
+
+    /* Класс для JS анимации */
+    .fade-in-visible {
+      animation: fadeIn 0.8s forwards;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Мой Блог</h1>
+    <div class="subtitle">Добро пожаловать в мой цифровой дневник</div>
+  </header>
+
+  <main class="timeline">
+
+    <!-- 14 января, 2026 -->
+    <article class="post">
+      <div class="date-badge">14 января, 2026</div>
+      <h2>Начало пути</h2>
+      <p>Домен - <strong>stratDaria.github.io</strong>.</p>
+      <p>Связаться со мной: <a href="mailto:alpopopou@gmail.com">Напишите мне письмо ✉️</a></p>
+    </article>
+
+    <!-- 20 декабря, 2025 -->
+    <article class="post">
+      <div class="date-badge">20 декабря, 2025</div>
+      <h2>Праздничное настроение 🎄</h2>
+      <p>Поздравляю с наступающим Рождеством 2026!</p>
+      <p>
+        <a href="ПОЗДРАВЛЕНИЕ С РОЖДЕСТВОМ!!!.odt" download>
+          📥 Скачать поздравление (ODT)
+        </a>
+      </p>
+      <p>Посмотрите видео с колядкой!: <a href="newTree.mp4.xspf">🎥 Колядка</a></p>
+    </article>
+
+    <!-- 1 декабря, 2025 -->
+    <article class="post">
+      <div class="date-badge">1 декабря, 2025</div>
+      <h2>Новый Год на носу</h2>
+      <p>Поздравление с Наступающим 2026 годом читайте <a href="Congratulations2026.html">здесь</a>.</p>
+    </article>
+
+    <!-- 15 октября, 2025 -->
+    <article class="post">
+      <div class="date-badge">15 октября, 2025</div>
+      <h2>Кроссворды и друзья</h2>
+      <p>Я сделала Новогодние кроссворды для сайта <a href="http://ksophia976.github.io/dem.github.jo/index.html" target="_blank">Сайт моего друга</a>.</p>
+      <p>
+        <a href="krossvordRU.html">🇷🇺 Русский кроссворд</a> | 
+        <a href="krossvordEN.html">🇬🇧 Английский кроссворд</a>
+      </p>
+    </article>
+
+    <!-- 1 сентября, 2025 -->
+    <article class="post">
+      <div class="date-badge">1 сентября, 2025</div>
+      <blockquote>Путешествие в тысячу миль начинается с одного шага (Лао Цзы)</blockquote>
+      <p>Оставляю в прошлом скучную неинтересную локальную файловую систему ради Всемирной паутины.</p>
+      
+      <!-- Плейсхолдер для иконки подарка -->
+      <img src="https://placehold.co/400x300/ff4757/ffffff?text=Christmas+Gift+Icon" alt="Рождественский подарок">
+      
+      <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">
+        Иконки: <a href="https://www.flaticon.com/ru/free-icons/-" title="рождественские элементы иконки">Рождественские элементы иконки от Luch Phou - Flaticon</a>
+      </p>
+    </article>
+
+    <!-- 19 января, 2026 -->
+    <article class="post">
+      <div class="date-badge">19 января, 2026</div>
+      <h2>Криптография: Шифр Цезаря</h2>
+      
+      <h3>1. Ключи шифра Цезаря</h3>
+      <p>а. АПЕЛЬСИН → САЦЬНВЩЮ → <strong>k = 17</strong></p>
+      <p>б. АБРИКОС → ЫЬЛГЕЙМ → <strong>k = 27</strong></p>
+
+      <h3>2. Расшифровка</h3>
+      <p>а. ФХНЗКЧ → <strong>ПРИВЕТ</strong></p>
+      <p>б. ЦЩЕБФ → <strong>ВЕСНА</strong></p>
+
+      <h3>3. Шифрование имени</h3>
+      <p><strong>ЫЬЪКЬШЧ ОКЪЖЙ</strong></p>
+    </article>
+
+    <!-- 21 января, 2026 -->
+    <article class="post">
+      <div class="date-badge">21 января, 2026</div>
+      <h2>RSA Шифрование (Интерактив) 🔐</h2>
+      <p>Пусть сообщение m = 2 означает «анализ готов».</p>
+      <p>Условие: m &lt; n → 2 &lt; 15 → ✅</p>
+      <p>Открытый ключ: (e = 3, n = 15)<br>Закрытый ключ: d = 3</p>
+
+      <div class="rsa-container">
+        <div class="rsa-input-group">
+          <label for="rsaInput">Введите m (шифрование) или C (расшифровка):</label>
+          <input type="text" id="rsaInput" value="2">
+        </div>
+        <div class="btn-group">
+          <button class="btn-encrypt" onclick="rsaEncrypt()">Зашифровать</button>
+          <button class="btn-decrypt" onclick="rsaDecrypt()">Расшифровать</button>
+        </div>
+        <pre id="rsaOutput"></pre>
+      </div>
+
+      <p style="margin-top: 20px; font-size: 0.8rem; color: #666;">
+        В реальности n = 15627384910293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756......</think>
+
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Мой Блог | Daria's Space</title>
+  
+  <!-- Подключение шрифтов (Google Fonts для надежности, так как локальные файлы не доступны) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;500;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-red: #ff4757;
+      --dark-red: #c0392b;
+      --primary-yellow: #ffa502;
+      --soft-yellow: #fff2cc;
+      --bg-gradient: linear-gradient(135deg, #fff9c4 0%, #ffecb3 100%);
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --text-main: #2d3436;
+      --shadow-soft: 0 10px 30px rgba(255, 71, 87, 0.15);
+      --shadow-hover: 0 20px 40px rgba(255, 71, 87, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Nunito', 'Comfortaa', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 0;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Анимации */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Хедер */
+    header {
+      text-align: center;
+      padding: 80px 20px 40px;
+      position: relative;
+    }
+
+    h1 {
+      font-family: 'Comfortaa', cursive;
+      font-size: 3.5rem;
+      color: var(--primary-red);
+      text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--dark-red);
+      opacity: 0.8;
+      font-weight: 700;
+    }
+
+    /* Контейнер ленты */
+    .timeline {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Линия времени */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary-yellow), var(--primary-red));
+      border-radius: 2px;
+      z-index: 0;
+    }
+
+    /* Карточка поста */
+    .post {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 50px;
+      position: relative;
+      width: 45%;
+      box-shadow: var(--shadow-soft);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      opacity: 0; /* Для JS анимации */
+      animation: none; /* JS добавит анимацию */
+      border: 2px solid transparent;
+      backdrop-filter: blur(10px);
+    }
+
+    .post:hover {
+      transform: scale(1.03) translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary-yellow);
+    }
+
+    .post:nth-child(odd) {
+      left: 0;
+      margin-right: auto;
+    }
+
+    .post:nth-child(even) {
+      left: 55%;
+      margin-left: auto;
+    }
+
+    /* Точка на линии */
+    .post::after {
+      content: '📍';
+      position: absolute;
+      top: 20px;
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border: 4px solid var(--primary-red);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      z-index: 1;
+      box-shadow: 0 0 0 4px var(--soft-yellow);
+    }
+
+    .post:nth-child(odd)::after {
+      right: -60px;
+    }
+
+    .post:nth-child(even)::after {
+      left: -60px;
+    }
+
+    /* Дата */
+    .date-badge {
+      display: inline-block;
+      background: var(--primary-red);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4);
+    }
+
+    h2, h3 {
+      color: var(--dark-red);
+      margin-bottom: 10px;
+      font-family: 'Comfortaa', cursive;
+    }
+
+    p {
+      margin-bottom: 15px;
+      font-size: 1.05rem;
+    }
+
+    a {
+      color: var(--primary-red);
+      text-decoration: none;
+      font-weight: 700;
+      border-bottom: 2px dashed var(--primary-yellow);
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: var(--dark-red);
+      border-bottom-style: solid;
+    }
+
+    blockquote {
+      background: var(--soft-yellow);
+      border-left: 5px solid var(--primary-yellow);
+      margin: 20px 0;
+      padding: 15px;
+      font-style: italic;
+      border-radius: 0 10px 10px 0;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 15px;
+      margin: 15px 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    
+    img:hover {
+      transform: scale(1.02);
+    }
+
+    /* Стили для калькулятора RSA */
+    .rsa-container {
+      background: #fff;
+      border: 2px solid var(--primary-yellow);
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .rsa-input-group {
+      margin-bottom: 15px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary-red);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-family: 'Nunito', sans-serif;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .btn-encrypt {
+      background: var(--primary-red);
+      color: white;
+    }
+
+    .btn-decrypt {
+      background: var(--primary-yellow);
+      color: var(--dark-red);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    #rsaOutput {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      margin-top: 15px;
+      color: #333;
+      border-left: 4px solid var(--primary-red);
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+      .timeline::before {
+        left: 20px;
+      }
+      
+      .post {
+        width: 100%;
+        left: 0 !important;
+        margin-left: 40px !important;
+        margin-right: 0 !important;
+      }
+
+      .post::after {
+        left: -54px !important;
+        right: auto !important;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+    }
+
+    /* Класс для JS анимации */
+    .fade-in-visible {
+      animation: fadeIn 0.8s forwards;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Мой Блог</h1>
+    <div class="subtitle">Добро пожаловать в мой цифровой дневник</div>
+  </header>
+
+  <main class="timeline">
+
+    <!-- 14 января, 2026 -->
+    <article class="post">
+      <div class="date-badge">14 января, 2026</div>
+      <h2>Начало пути</h2>
+      <p>Домен - <strong>stratDaria.github.io</strong>.</p>
+      <p>Связаться со мной: <a href="mailto:alpopopou@gmail.com">Напишите мне письмо ✉️</a></p>
+    </article>
+
+    <!-- 20 декабря, 2025 -->
+    <article class="post">
+      <div class="date-badge">20 декабря, 2025</div>
+      <h2>Праздничное настроение 🎄</h2>
+      <p>Поздравляю с наступающим Рождеством 2026!</p>
+      <p>
+        <a href="ПОЗДРАВЛЕНИЕ С РОЖДЕСТВОМ!!!.odt" download>
+          📥 Скачать поздравление (ODT)
+        </a>
+      </p>
+      <p>Посмотрите видео с колядкой!: <a href="newTree.mp4.xspf">🎥 Колядка</a></p>
+    </article>
+
+    <!-- 1 декабря, 2025 -->
+    <article class="post">
+      <div class="date-badge">1 декабря, 2025</div>
+      <h2>Новый Год на носу</h2>
+      <p>Поздравление с Наступающим 2026 годом читайте <a href="Congratulations2026.html">здесь</a>.</p>
+    </article>
+
+    <!-- 15 октября, 2025 -->
+    <article class="post">
+      <div class="date-badge">15 октября, 2025</div>
+      <h2>Кроссворды и друзья</h2>
+      <p>Я сделала Новогодние кроссворды для сайта <a href="http://ksophia976.github.io/dem.github.jo/index.html" target="_blank">Сайт моего друга</a>.</p>
+      <p>
+        <a href="krossvordRU.html">🇷🇺 Русский кроссворд</a> | 
+        <a href="krossvordEN.html">🇬🇧 Английский кроссворд</a>
+      </p>
+    </article>
+
+    <!-- 1 сентября, 2025 -->
+    <article class="post">
+      <div class="date-badge">1 сентября, 2025</div>
+      <blockquote>Путешествие в тысячу миль начинается с одного шага (Лао Цзы)</blockquote>
+      <p>Оставляю в прошлом скучную неинтересную локальную файловую систему ради Всемирной паутины.</p>
+      
+      <!-- Плейсхолдер для иконки подарка -->
+      <img src="https://placehold.co/400x300/ff4757/ffffff?text=Christmas+Gift+Icon" alt="Рождественский подарок">
+      
+      <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">
+        Иконки: <a href="https://www.flaticon.com/ru/free-icons/-" title="рождественские элементы иконки">Рождественские элементы иконки от Luch Phou - Flaticon</a>
+      </p>
+    </article>
+
+    <!-- 19 января, 2026 -->
+    <article class="post">
+      <div class="date-badge">19 января, 2026</div>
+      <h2>Криптография: Шифр Цезаря</h2>
+      
+      <h3>1. Ключи шифра Цезаря</h3>
+      <p>а. АПЕЛЬСИН → САЦЬНВЩЮ → <strong>k = 17</strong></p>
+      <p>б. АБРИКОС → ЫЬЛГЕЙМ → <strong>k = 27</strong></p>
+
+      <h3>2. Расшифровка</h3>
+      <p>а. ФХНЗКЧ → <strong>ПРИВЕТ</strong></p>
+      <p>б. ЦЩЕБФ → <strong>ВЕСНА</strong></p>
+
+      <h3>3. Шифрование имени</h3>
+      <p><strong>ЫЬЪКЬШЧ ОКЪЖЙ</strong></p>
+    </article>
+
+    <!-- 21 января, 2026 -->
+    <article class="post">
+      <div class="date-badge">21 января, 2026</div>
+      <h2>RSA Шифрование (Интерактив) 🔐</h2>
+      <p>Пусть сообщение m = 2 означает «анализ готов».</p>
+      <p>Условие: m &lt; n → 2 &lt; 15 → ✅</p>
+      <p>Открытый ключ: (e = 3, n = 15)<br>Закрытый ключ: d = 3</p>
+
+      <div class="rsa-container">
+        <div class="rsa-input-group">
+          <label for="rsaInput">Введите m (шифрование) или C (расшифровка):</label>
+          <input type="text" id="rsaInput" value="2">
+        </div>
+        <div class="btn-group">
+          <button class="btn-encrypt" onclick="rsaEncrypt()">Зашифровать</button>
+          <button class="btn-decrypt" onclick="rsaDecrypt()">Расшифровать</button>
+        </div>
+        <pre id="rsaOutput"></pre>
+      </div>
+
+      <p style="margin-top: 20px; font-size: 0.8rem; color: #666;">
+        В реальности n = 15627384910293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756102938475610293847561029384756......
+      </p>
+    </article>
+
+    <!-- 17 февраля, 2026 -->
+    <article class="post">
+      <div class="date-badge">17 февраля, 2026</div>
+      <h2>Машинное обучение: Распознавание 🍅</h2>
+      <p>Топ-3 предсказаний модели:</p>
+      <ul style="list-style: none; margin-bottom: 15px;">
+        <li>🥇 <strong>Rose hip:</strong> 96.72%</li>
+        <li>🥈 <strong>Bell pepper:</strong> 1.41%</li>
+        <li>🥉 <strong>Strawberry:</strong> 0.85%</li>
+      </ul>
+      <img src="https://placehold.co/400x300/ff4757/ffffff?text=Tomato+Image" alt="Помидор">
+    </article>
+
+    <!-- 21 февраля, 2026 -->
+    <article class="post">
+      <div class="date-badge">21 февраля, 2026</div>
+      <h2>Лог работы Чат-бота 🤖</h2>
+      <p><strong>Вопрос пользователя:</strong> Сколько ждать мой заказ?</p>
+      <p><strong>Найден FAQ-вопрос:</strong> «Как быстро доставляется заказ?» (sim=0.706)</p>
+      <p><strong>Ответ бот-FAQ:</strong> Наш стандартный срок доставки — 3–5 рабочих дней.</p>
+      <p><strong>Дополнительный вопрос:</strong> «Как оплатить заказ?»</p>
+      <p><strong>Анализ:</strong> Чат-бот справился с вопросом? <em>Да, бот успешно нашел соответствующий FAQ и дал ответ по срокам доставки. По вопросу оплаты нужно проверить отдельно.</em></p>
+    </article>
+
+  </main>
+
+  <footer style="text-align: center; padding: 40px; color: var(--dark-red); font-size: 0.9rem;">
+    <p>&copy; 2026 Мой Блог. Сделано с любовью ❤️</p>
+  </footer>
+
+  <script>
+    // --- Логика RSA ---
+    const e = 3;
+    const d = 3;
+    const n = 15;
+
+    function modExp(base, exp, mod) {
+      let result = 1;
+      base = base % mod;
+      while (exp > 0) {
+        if (exp % 2 === 1) {
+          result = (result * base) % mod;
+        }
+        exp = Math.floor(exp / 2);
+        base = (base * base) % mod;
+      }
+      return result;
+    }
+
+    function rsaEncrypt() {
+      const input = document.getElementById('rsaInput').value.trim();
+      const output = document.getElementById('rsaOutput');
+      
+      if (input === '') {
+        output.innerText = 'Ошибка: введите сообщение m.';
+        return;
+      }
+      const m = Number(input);
+      if (!Number.isInteger(m) || m < 0) {
+        output.innerText = 'Ошибка: m должно быть целым неотрицательным числом.';
+        return;
+      }
+      if (m >= n) {
+        output.innerText = 'Ошибка: m должно быть меньше n (m < 15).';
+        return;
+      }
+      const C = modExp(m, e, n);
+      output.innerText = 
+        'Шифрование:\n' +
+        'C = m^e mod n = ' + m + '^' + e + ' mod ' + n + ' = ' + C;
+    }
+
+    function rsaDecrypt() {
+      const input = document.getElementById('rsaInput').value.trim();
+      const output = document.getElementById('rsaOutput');
+
+      if (input === '') {
+        output.innerText = 'Ошибка: введите шифротекст C.';
+        return;
+      }
+      const C = Number(input);
+      if (!Number.isInteger(C) || C < 0) {
+        output.innerText = 'Ошибка: C должно быть целым неотрицательным числом.';
+        return;
+      }
+      if (C >= n) {
+        output.innerText = 'Ошибка: C должно быть меньше n (C < 15).';
+        return;
+      }
+      const m = modExp(C, d, n);
+      output.innerText = 
+        'Расшифровка:\n' +
+        'm = C^d mod n = ' + C + '^' + d + ' mod ' + n + ' = ' + m;
+    }
+
+    // --- Анимация появления при скролле ---
+    document.addEventListener('DOMContentLoaded', () => {
+      const posts = document.querySelectorAll('.post');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('fade-in-visible');
+          }
+        });
+      }, {
+        threshold: 0.1
+      });
+
+      posts.forEach(post => {
+        observer.observe(post);
+      });
+    });
+  </script>
+</body>
+</html>
+```
