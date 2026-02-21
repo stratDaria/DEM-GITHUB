@@ -20,383 +20,393 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Мой Блог | StratDaria</title>
+  <title>Мой Сочный Блог</title>
   
-  <!-- Fonts -->
+  <!-- Подключение шрифта через Fontsource (CDN) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Rubik:wght@400;700&display=swap" rel="stylesheet">
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&family=Lobster&display=swap" rel="stylesheet">
+
   <style>
-    /* Custom Font Setup */
-    @font-face {
-      font-family: 'Pudelinka';
-      src: local('Pudelinka');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
+    :root {
+      --primary-red: #ff2e00;
+      --primary-yellow: #ffea00;
+      --secondary-yellow: #fff176;
+      --dark-red: #8b0000;
+      --bg-gradient: linear-gradient(135deg, #ff0000 0%, #ff8c00 100%);
+      --card-shadow: 8px 8px 0px rgba(0,0,0,0.2);
+      --card-hover-shadow: 12px 12px 0px rgba(0,0,0,0.3);
     }
 
-    :root {
-      --primary-red: #ff2e63;
-      --primary-yellow: #08d9d6;
-      --accent-orange: #ff9f1c;
-      --bg-gradient: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      font-family: 'Nunito', 'Pudelinka', sans-serif;
+      font-family: 'Comfortaa', cursive;
       background: var(--bg-gradient);
-      color: #fff;
-      margin: 0;
+      color: var(--dark-red);
       min-height: 100vh;
+      line-height: 1.6;
       overflow-x: hidden;
+      position: relative;
     }
 
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 10px;
+    /* Canvas Background */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.6;
     }
-    ::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.1);
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
     }
-    ::-webkit-scrollbar-thumb {
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      animation: slideDown 1s ease-out;
+    }
+
+    h1 {
+      font-family: 'Lobster', cursive;
+      font-size: 4rem;
+      color: var(--primary-yellow);
+      text-shadow: 4px 4px 0px var(--dark-red);
+      margin-bottom: 10px;
+      transform: rotate(-2deg);
+    }
+
+    /* Timeline Items */
+    .timeline-item {
+      background: var(--primary-yellow);
+      border: 3px solid var(--primary-red);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .timeline-item:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: var(--card-hover-shadow);
       background: #fff;
-      border-radius: 5px;
+    }
+
+    .date-badge {
+      background: var(--primary-red);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 50px;
+      display: inline-block;
+      font-weight: bold;
+      margin-bottom: 15px;
+      box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: var(--dark-red);
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      color: #d32f2f;
+    }
+
+    p {
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+
+    blockquote {
+      background: rgba(255, 255, 255, 0.5);
+      border-left: 5px solid var(--primary-red);
+      padding: 15px;
+      font-style: italic;
+      margin: 20px 0;
+      border-radius: 0 10px 10px 0;
+    }
+
+    /* Links */
+    a {
+      color: var(--primary-red);
+      text-decoration: none;
+      font-weight: bold;
+      border-bottom: 2px dashed var(--primary-red);
+      transition: all 0.2s;
+    }
+
+    a:hover {
+      background: var(--primary-red);
+      color: white;
+      border-bottom-style: solid;
+      border-radius: 4px;
+    }
+
+    /* Images */
+    .img-container {
+      margin: 20px 0;
+      border-radius: 15px;
+      overflow: hidden;
+      border: 3px solid var(--primary-red);
+      box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .img-container:hover {
+      transform: scale(1.05);
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* RSA Tool Styles */
+    .rsa-tool {
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      border: 2px solid var(--primary-red);
+      margin-top: 20px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--primary-yellow);
+      border-radius: 10px;
+      font-family: 'Comfortaa', cursive;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary-red);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Comfortaa', cursive;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.1s;
+      text-transform: uppercase;
+    }
+
+    .btn-encrypt {
+      background: var(--primary-red);
+      color: white;
+      box-shadow: 0 4px 0 #b71c1c;
+    }
+
+    .btn-decrypt {
+      background: var(--primary-yellow);
+      color: var(--dark-red);
+      box-shadow: 0 4px 0 #fbc02d;
+    }
+
+    button:active {
+      transform: translateY(4px);
+      box-shadow: none;
+    }
+
+    #output {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 10px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      border: 1px solid #ddd;
     }
 
     /* Animations */
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
     @keyframes float {
       0% { transform: translateY(0px); }
       50% { transform: translateY(-10px); }
       100% { transform: translateY(0px); }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .floating {
+      animation: float 3s ease-in-out infinite;
     }
 
-    .animate-float {
-      animation: float 6s ease-in-out infinite;
-    }
-
-    .timeline-item {
-      animation: fadeIn 0.8s ease-out forwards;
-      opacity: 0;
-    }
-
-    /* Glassmorphism Card */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-      border-radius: 20px;
-      transition: all 0.3s ease;
-    }
-
-    .glass-card:hover {
-      transform: translateY(-5px) scale(1.02);
-      background: rgba(255, 255, 255, 0.25);
-      box-shadow: 0 15px 40px 0 rgba(31, 38, 135, 0.5);
-    }
-
-    /* Interactive Elements */
-    .btn-juicy {
-      background: linear-gradient(45deg, #ff9966, #ff5e62);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 50px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 15px rgba(255, 94, 98, 0.4);
-    }
-
-    .btn-juicy:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(255, 94, 98, 0.6);
-    }
-
-    .btn-juicy:active {
-      transform: scale(0.95);
-    }
-
-    .link-styled {
-      color: #fff;
-      text-decoration: underline;
-      text-decoration-color: #ffeb3b;
-      text-decoration-thickness: 2px;
-      transition: color 0.3s;
-    }
-    
-    .link-styled:hover {
-      color: #ffeb3b;
-      text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
-    }
-
-    /* RSA Input Styles */
-    .rsa-input {
-      background: rgba(0,0,0,0.2);
-      border: 2px solid rgba(255,255,255,0.5);
-      color: white;
-      padding: 8px;
-      border-radius: 8px;
-      width: 100px;
-      text-align: center;
-      font-family: monospace;
-    }
-    
-    .rsa-input:focus {
-      outline: none;
-      border-color: #ffeb3b;
-      background: rgba(0,0,0,0.4);
-    }
-
-    .code-block {
-      background: rgba(0,0,0,0.3);
-      padding: 15px;
-      border-radius: 10px;
-      font-family: monospace;
-      font-size: 0.9em;
-      border-left: 4px solid #ffeb3b;
-    }
-
-    .date-badge {
-      background: #ffeb3b;
-      color: #d32f2f;
-      padding: 5px 15px;
-      border-radius: 20px;
-      font-weight: 900;
-      display: inline-block;
-      margin-bottom: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    /* Responsive */
+    @media (max-width: 600px) {
+      h1 { font-size: 3rem; }
+      .timeline-item { padding: 20px; }
     }
   </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-  <div class="max-w-4xl mx-auto">
-    
-    <!-- Header -->
-    <header class="text-center mb-16 animate-float">
-      <h1 class="text-5xl md:text-7xl font-black text-white drop-shadow-lg mb-4" style="text-shadow: 2px 2px 0px #ff0000;">
-        Мой Блог
-      </h1>
-      <p class="text-xl md:text-2xl font-bold text-yellow-300">stratDaria.github.io</p>
-      <a href="mailto:alpopopou@gmail.com" class="inline-block mt-4 btn-juicy">
-        ✉️ Напишите мне
-      </a>
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="container">
+    <header>
+      <h1>Мой Блог</h1>
+      <p style="color: white; font-weight: bold; font-size: 1.2rem;">Красно-желтая вселенная</p>
     </header>
 
-    <!-- Timeline Container -->
-    <div class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/30 before:to-transparent">
+    <!-- 14 января, 2026 -->
+    <article class="timeline-item">
+      <div class="date-badge">14 января, 2026</div>
+      <h2>Информация о сайте</h2>
+      <p>Домен: <strong>stratDaria.github.io</strong></p>
+      <p>Связь: <a href="mailto:alpopopou@gmail.com">Напишите мне на почту</a></p>
+    </article>
 
-      <!-- 21 ФЕВРАЛЯ 2026 -->
-      <div class="timeline-item relative flex items-center justify-end md:justify-center pr-8 md:pr-0 md:pl-0 group">
-        <div class="absolute left-0 md:left-1/2 w-10 h-10 bg-yellow-400 rounded-full border-4 border-white shadow-lg transform -translate-x-1/2 flex items-center justify-center z-10 text-red-600 font-bold">
-          21
-        </div>
-        <div class="w-full md:w-5/12 glass-card p-6 md:ml-8">
-          <span class="date-badge">21 февраля, 2026</span>
-          <h3 class="text-2xl font-bold mb-4 text-yellow-200">🤖 Лог чат-бота</h3>
-          <div class="code-block space-y-2">
-            <p><span class="text-blue-300">Вопрос:</span> Сколько ждать мой заказ?</p>
-            <p><span class="text-green-300">Анализ:</span> Найден FAQ-вопрос: «Как быстро доставляется заказ?» (sim=0.706)</p>
-            <p><span class="text-yellow-300">Ответ бота:</span> Наш стандартный срок доставки — 3–5 рабочих дней.</p>
-            <hr class="border-white/20 my-2">
-            <p><span class="text-blue-300">Доп. вопрос:</span> «Как оплатить заказ?»</p>
-            <p class="italic text-gray-300">Чат-бот справился с вопросом? <span class="text-green-400 font-bold">Да</span>, бот успешно нашел соответствующий FAQ. По вопросу оплаты нужно проверить отдельно.</p>
-          </div>
-        </div>
+    <!-- 20 декабря, 2025 -->
+    <article class="timeline-item">
+      <div class="date-badge">20 декабря, 2025</div>
+      <h2>Праздничное настроение</h2>
+      <p>Поздравляю с наступающим Рождеством 2026!</p>
+      <p>🎁 <a href="ПОЗДРАВЛЕНИЕ С РОЖДЕСТВОМ!!!.odt" download>Скачать ПОЗДРАВЛЕНИЕ С РОЖДЕСТВОМ!!!</a></p>
+      <p>🎄 Посмотрите видео с колядкой: <a href="newTree.mp4.xspf">Колядка (Видео)</a></p>
+    </article>
+
+    <!-- 1 декабря, 2025 -->
+    <article class="timeline-item">
+      <div class="date-badge">1 декабря, 2025</div>
+      <h2>Новый год</h2>
+      <p>Поздравление с Наступающим 2026 годом читайте <a href="Congratulations2026.html">здесь</a>.</p>
+    </article>
+
+    <!-- 15 октября, 2025 -->
+    <article class="timeline-item">
+      <div class="date-badge">15 октября, 2025</div>
+      <h2>Кроссворды</h2>
+      <p>Я сделала Новогодние кроссворды для сайта <a href="http://ksophia976.github.io/dem.github.jo/index.html" target="_blank">Сайт моего друга</a>.</p>
+      <div style="background: rgba(255,255,255,0.5); padding: 15px; border-radius: 10px; margin-top: 10px;">
+        <a href="krossvordRU.html">🇷🇺 Русский кроссворд</a> | 
+        <a href="krossvordEN.html">🇬🇧 Английский кроссворд</a>
+      </div>
+    </article>
+
+    <!-- 1 сентября, 2025 -->
+    <article class="timeline-item">
+      <div class="date-badge">1 сентября, 2025</div>
+      <h2>Начало пути</h2>
+      <blockquote>Путешествие в тысячу миль начинается с одного шага (Лао Цзы)</blockquote>
+      <p>Оставляю в прошлом скучную неинтересную локальную файловую систему ради Всемирной паутины.</p>
+      
+      <div class="img-container floating">
+        <!-- Placeholder image for the gift -->
+        <img src="https://images.unsplash.com/photo-1512909006721-3d6018887383?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Рождественский подарок">
       </div>
 
-      <!-- 17 ФЕВРАЛЯ 2026 -->
-      <div class="timeline-item relative flex items-center justify-start md:justify-center pl-8 md:pl-0 md:flex-row-reverse group">
-        <div class="absolute right-0 md:right-1/2 w-10 h-10 bg-red-500 rounded-full border-4 border-white shadow-lg transform translate-x-1/2 flex items-center justify-center z-10 text-white font-bold">
-          17
+      <p style="font-size: 0.9rem; margin-top: 10px;">
+        Иконки: <a href="https://www.flaticon.com/ru/free-icons/-" title="рождественские элементы иконки">Рождественские элементы иконки от Luch Phou - Flaticon</a>
+      </p>
+    </article>
+
+    <!-- 19 января, 2026 -->
+    <article class="timeline-item">
+      <div class="date-badge">19 января, 2026</div>
+      <h2>Шифр Цезаря</h2>
+      <h3>1. Ключи шифра</h3>
+      <p>а. АПЕЛЬСИН → САЦЬНВЩЮ → <strong>k = 17</strong></p>
+      <p>б. АБРИКОС → ЫЬЛГЕЙМ → <strong>k = 27</strong></p>
+
+      <h3>2. Расшифровка</h3>
+      <p>а. ФХНЗКЧ → <strong>ПРИВЕТ</strong></p>
+      <p>б. ЦЩЕБФ → <strong>ВЕСНА</strong></p>
+
+      <h3>3. Шифрование имени</h3>
+      <p><strong>ЫЬЪКЬШЧ ОКЪЖЙ</strong></p>
+    </article>
+
+    <!-- 21 января, 2026 -->
+    <article class="timeline-item">
+      <div class="date-badge">21 января, 2026</div>
+      <h2>RSA Шифрование</h2>
+      <p>Учебный пример. Пусть сообщение m = 2 означает «анализ готов».</p>
+      <p>Открытый ключ: (e = 3, n = 15)<br>Закрытый ключ: d = 3</p>
+
+      <div class="rsa-tool">
+        <label>Введите m (шифровать) или C (расшифровать):</label>
+        <input type="text" id="rsa-input" value="2">
+        
+        <div class="btn-group">
+          <button class="btn-encrypt" onclick="encryptRSA()">Зашифровать</button>
+          <button class="btn-decrypt" onclick="decryptRSA()">Расшифровать</button>
         </div>
-        <div class="w-full md:w-5/12 glass-card p-6 md:mr-8">
-          <span class="date-badge">17 февраля, 2026</span>
-          <h3 class="text-2xl font-bold mb-4 text-yellow-200">🍅 Распознавание образов</h3>
-          <div class="flex flex-col md:flex-row gap-4 items-center">
-            <img src="https://image.qwenlm.ai/public_source/fa54b45e-0d34-4c39-9b09-8e397a8a4e1f/1d4013da1-3f44-44e1-99ce-bb1d6a81e54e.png" alt="Помидор" class="w-32 h-32 object-cover rounded-xl shadow-lg border-2 border-white/50 hover:scale-110 transition-transform">
-            <div class="code-block w-full">
-              <p class="font-bold text-yellow-300 mb-2">Топ-3 предсказания:</p>
-              <ul class="list-disc list-inside space-y-1">
-                <li>rose hip: <span class="text-green-400 font-mono">96.72%</span></li>
-                <li>bell pepper: <span class="text-gray-300 font-mono">1.41%</span></li>
-                <li>strawberry: <span class="text-gray-300 font-mono">0.85%</span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
+
+        <pre id="rsa-output">Результат появится здесь...</pre>
       </div>
 
-      <!-- 21 ЯНВАРЯ 2026 (RSA) -->
-      <div class="timeline-item relative flex items-center justify-end md:justify-center pr-8 md:pr-0 md:pl-0">
-        <div class="absolute left-0 md:left-1/2 w-10 h-10 bg-purple-500 rounded-full border-4 border-white shadow-lg transform -translate-x-1/2 flex items-center justify-center z-10 text-white font-bold">
-          21
-        </div>
-        <div class="w-full md:w-5/12 glass-card p-6 md:ml-8">
-          <span class="date-badge">21 января, 2026</span>
-          <h3 class="text-2xl font-bold mb-2 text-yellow-200">🔐 RSA Шифрование</h3>
-          <p class="mb-4 text-sm opacity-90">Учебный пример: e=3, d=3, n=15</p>
-          
-          <div class="bg-white/10 p-4 rounded-xl mb-4">
-            <label class="block text-sm font-bold mb-2 text-yellow-100">Введите число (m или C):</label>
-            <div class="flex gap-2 items-center">
-              <input type="number" id="rsaInput" class="rsa-input" value="2">
-              <button onclick="rsaEncrypt()" class="btn-juicy text-sm py-2 px-4">Зашифровать</button>
-              <button onclick="rsaDecrypt()" class="btn-juicy text-sm py-2 px-4 bg-blue-500 hover:bg-blue-600">Расшифровать</button>
-            </div>
-          </div>
-          
-          <div id="rsaOutput" class="code-block min-h-[60px] text-green-300 font-mono text-sm">
-            Ожидание ввода...
-          </div>
-          
-          <p class="mt-4 text-xs opacity-60 break-all">
-            В реальности n может быть огромным числом, например: 1562738491029384756...
-          </p>
-        </div>
+      <p style="font-size: 0.8rem; margin-top: 15px; opacity: 0.8;">
+        В реальности n намного больше: n-1562738491029384756... (очень длинное число)
+      </p>
+    </article>
+
+    <!-- 17 февраля, 2026 -->
+    <article class="timeline-item">
+      <div class="date-badge">17 февраля, 2026</div>
+      <h2>AI Предсказания</h2>
+      <p>Топ-3 предсказания модели:</p>
+      <ul style="margin-left: 20px; margin-bottom: 15px;">
+        <li>🍒 Rose hip: <strong>96.72%</strong></li>
+        <li>🫑 Bell pepper: 1.41%</li>
+        <li>🍓 Strawberry: 0.85%</li>
+      </ul>
+      <div class="img-container">
+        <img src="https://images.unsplash.com/photo-1592914610354-fd354ea45e48?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Помидор / Rose Hip">
       </div>
+    </article>
 
-      <!-- 19 ЯНВАРЯ 2026 -->
-      <div class="timeline-item relative flex items-center justify-start md:justify-center pl-8 md:pl-0 md:flex-row-reverse">
-        <div class="absolute right-0 md:right-1/2 w-10 h-10 bg-red-500 rounded-full border-4 border-white shadow-lg transform translate-x-1/2 flex items-center justify-center z-10 text-white font-bold">
-          19
-        </div>
-        <div class="w-full md:w-5/12 glass-card p-6 md:mr-8">
-          <span class="date-badge">19 января, 2026</span>
-          <h3 class="text-2xl font-bold mb-4 text-yellow-200"> Криптография</h3>
-          
-          <div class="space-y-4">
-            <div>
-              <h4 class="font-bold text-lg text-red-200">1. Ключи шифра Цезаря</h4>
-              <ul class="list-disc list-inside ml-2 mt-1 space-y-1">
-                <li>АПЕЛЬСИН → САЦЬНВЩЮ → <strong class="text-yellow-300">k = 17</strong></li>
-                <li>АБРИКОС → ЫЬЛГЕЙМ → <strong class="text-yellow-300">k = 27</strong></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 class="font-bold text-lg text-red-200">2. Расшифровка</h4>
-              <ul class="list-disc list-inside ml-2 mt-1 space-y-1">
-                <li>ФХНЗКЧ → <strong class="text-green-300">ПРИВЕТ</strong></li>
-                <li>ЦЩЕБФ → <strong class="text-green-300">ВЕСНА</strong></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 class="font-bold text-lg text-red-200">3. Шифрование имени</h4>
-              <p class="mt-1 font-mono text-xl tracking-widest text-yellow-200 bg-black/20 inline-block px-2 rounded">ЫЬЪКЬШЧ ОКЪЖЙ</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 14 ЯНВАРЯ 2026 -->
-      <div class="timeline-item relative flex items-center justify-end md:justify-center pr-8 md:pr-0 md:pl-0">
-        <div class="absolute left-0 md:left-1/2 w-10 h-10 bg-yellow-400 rounded-full border-4 border-white shadow-lg transform -translate-x-1/2 flex items-center justify-center z-10 text-red-600 font-bold">
-          14
-        </div>
-        <div class="w-full md:w-5/12 glass-card p-6 md:ml-8">
-          <span class="date-badge">14 января, 2026</span>
-          <p class="text-lg">Домен успешно настроен: <strong>stratDaria.github.io</strong></p>
-        </div>
-      </div>
-
-      <!-- 20 ДЕКАБРЯ 2025 -->
-      <div class="timeline-item relative flex items-center justify-start md:justify-center pl-8 md:pl-0 md:flex-row-reverse">
-        <div class="absolute right-0 md:right-1/2 w-10 h-10 bg-green-500 rounded-full border-4 border-white shadow-lg transform translate-x-1/2 flex items-center justify-center z-10 text-white font-bold">
-          20
-        </div>
-        <div class="w-full md:w-5/12 glass-card p-6 md:mr-8">
-          <span class="date-badge">20 декабря, 2025</span>
-          <h3 class="text-2xl font-bold mb-4 text-yellow-200">🎄 Праздники</h3>
-          <p class="mb-4">Поздравляю с наступающим Рождеством 2026!</p>
-          <div class="flex flex-col gap-3">
-            <a href="ПОЗДРАВЛЕНИЕ С РОЖДЕСТВОМ!!!.odt" download class="btn-juicy text-center flex items-center justify-center gap-2">
-              📄 Скачать поздравление (.odt)
-            </a>
-            <a href="newTree.mp4.xspf" class="link-styled text-center block py-2 bg-white/10 rounded-lg hover:bg-white/20 transition">
-              🎥 Посмотреть видео с колядкой
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- 1 ДЕКАБРЯ 2025 -->
-      <div class="timeline-item relative flex items-center justify-end md:justify-center pr-8 md:pr-0 md:pl-0">
-        <div class="absolute left-0 md:left-1/2 w-10 h-10 bg-red-500 rounded-full border-4 border-white shadow-lg transform -translate-x-1/2 flex items-center justify-center z-10 text-white font-bold">
-          01
-        </div>
-        <div class="w-full md:w-5/12 glass-card p-6 md:ml-8">
-          <span class="date-badge">1 декабря, 2025</span>
-          <p class="text-lg">
-            Поздравление с Наступающим 2026 годом читайте 
-            <a href="Congratulations2026.html" class="link-styled font-bold">здесь</a>.
-          </p>
-        </div>
-      </div>
-
-      <!-- 15 ОКТЯБРЯ 2025 -->
-      <div class="timeline-item relative flex items-center justify-start md:justify-center pl-8 md:pl-0 md:flex-row-reverse">
-        <div class="absolute right-0 md:right-1/2 w-10 h-10 bg-purple-500 rounded-full border-4 border-white shadow-lg transform translate-x-1/2 flex items-center justify-center z-10 text-white font-bold">
-          15
-        </div>
-        <div class="w-full md:w-5/12 glass-card p-6 md:mr-8">
-          <span class="date-badge">15 октября, 2025</span>
-          <p class="mb-4">Я сделала Новогодние кроссворды для сайта <a href="http://ksophia976.github.io/dem.github.jo/index.html" class="link-styled">Сайт моего друга</a>.</p>
-          <div class="flex gap-4 flex-wrap">
-            <a href="krossvordRU.html" class="btn-juicy bg-red-500 hover:bg-red-600">🇷🇺 Русский кроссворд</a>
-            <a href="krossvordEN.html" class="btn-juicy bg-blue-500 hover:bg-blue-600">🇬🇧 English Crossword</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- 1 СЕНТЯБРЯ 2025 -->
-      <div class="timeline-item relative flex items-center justify-end md:justify-center pr-8 md:pr-0 md:pl-0">
-        <div class="absolute left-0 md:left-1/2 w-10 h-10 bg-yellow-400 rounded-full border-4 border-white shadow-lg transform -translate-x-1/2 flex items-center justify-center z-10 text-red-600 font-bold">
-          01
-        </div>
-        <div class="w-full md:w-5/12 glass-card p-6 md:ml-8">
-          <span class="date-badge">1 сентября, 2025</span>
-          <blockquote class="border-l-4 border-yellow-300 pl-4 italic text-xl mb-4 text-yellow-100">
-            "Путешествие в тысячу миль начинается с одного шага" (Лао Цзы)
-          </blockquote>
-          <p class="mb-6">Оставляю в прошлом скучную неинтересную локальную файловую систему ради Всемирной паутины.</p>
-          
-          <div class="flex flex-col items-center gap-4">
-            <img src="https://image.qwenlm.ai/public_source/fa54b45e-0d34-4c39-9b09-8e397a8a4e1f/1a7e0ee37-584c-47f4-92b5-cab1699878ae.png" alt="Рождественский подарок" class="w-48 h-48 object-contain drop-shadow-2xl hover:rotate-6 transition-transform duration-500">
-            
-            <p class="text-sm opacity-80 text-center max-w-xs">
-              Иконки: 
-              <a href="https://www.flaticon.com/ru/free-icons/-" class="link-styled text-xs block mt-1">
-                Рождественские элементы иконки от Luch Phou - Flaticon
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    
-    <footer class="text-center mt-20 pb-10 opacity-70 text-sm">
-      <p>© 2025-2026 StratDaria. Все права защищены.</p>
-    </footer>
+    <!-- 21 февраля, 2026 -->
+    <article class="timeline-item">
+      <div class="date-badge">21 февраля, 2026</div>
+      <h2>Лог чат-бота</h2>
+      <p><strong>Вопрос пользователя:</strong> Сколько ждать мой заказ?</p>
+      <p><strong>Найден FAQ-вопрос:</strong> «Как быстро доставляется заказ?» (sim=0.706)</p>
+      <p><strong>Ответ бот-FAQ:</strong> Наш стандартный срок доставки — 3–5 рабочих дней.</p>
+      <p><strong>Дополнительный вопрос:</strong> «Как оплатить заказ?»</p>
+      <p><em>Чат-бот справился с вопросом? Да, бот успешно нашел соответствующий FAQ и дал ответ по срокам доставки. По вопросу оплаты нужно проверить отдельно.</em></p>
+    </article>
 
   </div>
 
   <script>
-    // RSA Logic
+    // --- RSA Logic ---
     const e = 3;
     const d = 3;
     const n = 15;
@@ -414,73 +424,109 @@
       return result;
     }
 
-    function rsaEncrypt() {
-      const inputVal = document.getElementById('rsaInput').value.trim();
-      const outputDiv = document.getElementById('rsaOutput');
+    function encryptRSA() {
+      const input = document.getElementById('rsa-input').value.trim();
+      const outputEl = document.getElementById('rsa-output');
       
-      if (inputVal === '') {
-        outputDiv.innerText = 'Ошибка: введите сообщение m.';
-        outputDiv.classList.add('text-red-400');
+      if (input === '') {
+        outputEl.innerText = 'Ошибка: введите сообщение m.';
         return;
       }
-      
-      const m = Number(inputVal);
+      const m = Number(input);
       if (!Number.isInteger(m) || m < 0) {
-        outputDiv.innerText = 'Ошибка: m должно быть целым неотрицательным числом.';
-        outputDiv.classList.add('text-red-400');
+        outputEl.innerText = 'Ошибка: m должно быть целым неотрицательным числом.';
         return;
       }
       if (m >= n) {
-        outputDiv.innerText = `Ошибка: m должно быть меньше n (m < ${n}).`;
-        outputDiv.classList.add('text-red-400');
+        outputEl.innerText = 'Ошибка: m должно быть меньше n (m < 15).';
         return;
       }
-      
       const C = modExp(m, e, n);
-      outputDiv.classList.remove('text-red-400');
-      outputDiv.innerText = `Шифрование:\nC = m^e mod n\n${m}^${e} mod ${n} = ${C}`;
+      outputEl.innerText = 'Шифрование:\n' +
+        'C = m^e mod n = ' + m + '^' + e + ' mod ' + n + ' = ' + C;
     }
 
-    function rsaDecrypt() {
-      const inputVal = document.getElementById('rsaInput').value.trim();
-      const outputDiv = document.getElementById('rsaOutput');
+    function decryptRSA() {
+      const input = document.getElementById('rsa-input').value.trim();
+      const outputEl = document.getElementById('rsa-output');
 
-      if (inputVal === '') {
-        outputDiv.innerText = 'Ошибка: введите шифротекст C.';
-        outputDiv.classList.add('text-red-400');
+      if (input === '') {
+        outputEl.innerText = 'Ошибка: введите шифротекст C.';
         return;
       }
-      
-      const C = Number(inputVal);
+      const C = Number(input);
       if (!Number.isInteger(C) || C < 0) {
-        outputDiv.innerText = 'Ошибка: C должно быть целым неотрицательным числом.';
-        outputDiv.classList.add('text-red-400');
+        outputEl.innerText = 'Ошибка: C должно быть целым неотрицательным числом.';
         return;
       }
       if (C >= n) {
-        outputDiv.innerText = `Ошибка: C должно быть меньше n (C < ${n}).`;
-        outputDiv.classList.add('text-red-400');
+        outputEl.innerText = 'Ошибка: C должно быть меньше n (C < 15).';
         return;
       }
-      
       const m = modExp(C, d, n);
-      outputDiv.classList.remove('text-red-400');
-      outputDiv.innerText = `Расшифровка:\nm = C^d mod n\n${C}^${d} mod ${n} = ${m}`;
+      outputEl.innerText = 'Расшифровка:\n' +
+        'm = C^d mod n = ' + C + '^' + d + ' mod ' + n + ' = ' + m;
     }
 
-    // Intersection Observer for Scroll Animations
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = 1;
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, { threshold: 0.1 });
+    // --- Particle Background Effect ---
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
 
-    document.querySelectorAll('.timeline-item').forEach((item) => {
-      observer.observe(item);
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 2;
+        this.vy = (Math.random() - 0.5) * 2;
+        this.size = Math.random() * 10 + 5;
+        this.color = Math.random() > 0.5 ? '#ffea00' : '#ff0000';
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < 50; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', () => {
+      resize();
+      initParticles();
     });
+
+    resize();
+    initParticles();
+    animate();
+
   </script>
 </body>
 </html>
