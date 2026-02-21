@@ -20,22 +20,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Мой Сочный Блог</title>
-  
-  <!-- Подключение шрифта через Fontsource (CDN) -->
+  <title>Мой Блог | StratDaria</title>
+  <!-- Подключение шрифтов -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&family=Lobster&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Pacifico&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      --primary-red: #ff2e00;
-      --primary-yellow: #ffea00;
-      --secondary-yellow: #fff176;
-      --dark-red: #8b0000;
-      --bg-gradient: linear-gradient(135deg, #ff0000 0%, #ff8c00 100%);
-      --card-shadow: 8px 8px 0px rgba(0,0,0,0.2);
-      --card-hover-shadow: 12px 12px 0px rgba(0,0,0,0.3);
+      --primary-red: #FF4136;
+      --primary-yellow: #FFDC00;
+      --dark-red: #85144b;
+      --bg-gradient: linear-gradient(135deg, #FFDC00 0%, #FF4136 100%);
+      --glass-bg: rgba(255, 255, 255, 0.95);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     }
 
     * {
@@ -45,371 +43,430 @@
     }
 
     body {
-      font-family: 'Comfortaa', cursive;
+      font-family: 'Montserrat', sans-serif;
       background: var(--bg-gradient);
-      color: var(--dark-red);
+      background-attachment: fixed;
+      color: #333;
       min-height: 100vh;
       line-height: 1.6;
       overflow-x: hidden;
-      position: relative;
     }
 
-    /* Canvas Background */
-    #bg-canvas {
+    /* Анимация фона */
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    body::before {
+      content: '';
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(-45deg, #FFDC00, #FF851B, #FF4136, #B10DC9);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
       z-index: -1;
-      opacity: 0.6;
+      opacity: 0.8;
     }
 
     .container {
       max-width: 800px;
       margin: 0 auto;
       padding: 40px 20px;
-      position: relative;
-      z-index: 1;
     }
 
-    /* Header */
     header {
       text-align: center;
       margin-bottom: 60px;
-      animation: slideDown 1s ease-out;
+      animation: fadeInDown 1s ease-out;
     }
 
     h1 {
-      font-family: 'Lobster', cursive;
-      font-size: 4rem;
-      color: var(--primary-yellow);
-      text-shadow: 4px 4px 0px var(--dark-red);
+      font-family: 'Pacifico', cursive;
+      font-size: 3.5rem;
+      color: #fff;
+      text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
       margin-bottom: 10px;
-      transform: rotate(-2deg);
     }
 
-    /* Timeline Items */
-    .timeline-item {
-      background: var(--primary-yellow);
-      border: 3px solid var(--primary-red);
+    .subtitle {
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.2rem;
+      background: rgba(0,0,0,0.2);
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+    }
+
+    /* Timeline Styles */
+    .timeline {
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 2px;
+    }
+
+    .entry {
+      position: relative;
+      margin-bottom: 50px;
+      margin-left: 50px;
+      background: var(--glass-bg);
       border-radius: 20px;
       padding: 30px;
-      margin-bottom: 40px;
-      box-shadow: var(--card-shadow);
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      position: relative;
-      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s forwards;
+      border-left: 5px solid var(--primary-red);
     }
 
-    .timeline-item:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: var(--card-hover-shadow);
-      background: #fff;
+    .entry:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    }
+
+    .entry::before {
+      content: '';
+      position: absolute;
+      left: -39px;
+      top: 30px;
+      width: 20px;
+      height: 20px;
+      background: var(--primary-yellow);
+      border: 4px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px var(--primary-red);
     }
 
     .date-badge {
-      background: var(--primary-red);
-      color: white;
-      padding: 5px 15px;
-      border-radius: 50px;
       display: inline-block;
-      font-weight: bold;
+      background: var(--primary-red);
+      color: #fff;
+      padding: 5px 15px;
+      border-radius: 15px;
+      font-weight: 800;
+      font-size: 0.9rem;
       margin-bottom: 15px;
-      box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 10px rgba(255, 65, 54, 0.4);
     }
 
     h2 {
       font-size: 1.8rem;
-      margin-bottom: 15px;
       color: var(--dark-red);
+      margin-bottom: 15px;
     }
 
     h3 {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
+      color: #d35400;
       margin-top: 20px;
       margin-bottom: 10px;
-      color: #d32f2f;
     }
 
     p {
-      margin-bottom: 12px;
-      font-size: 1.1rem;
+      margin-bottom: 15px;
+      font-size: 1.05rem;
     }
 
     blockquote {
-      background: rgba(255, 255, 255, 0.5);
-      border-left: 5px solid var(--primary-red);
-      padding: 15px;
+      border-left: 4px solid var(--primary-yellow);
+      padding-left: 20px;
       font-style: italic;
-      margin: 20px 0;
+      color: #555;
+      background: rgba(255, 220, 0, 0.1);
+      padding: 15px;
       border-radius: 0 10px 10px 0;
+      margin: 20px 0;
     }
 
     /* Links */
     a {
       color: var(--primary-red);
       text-decoration: none;
-      font-weight: bold;
-      border-bottom: 2px dashed var(--primary-red);
+      font-weight: 600;
+      border-bottom: 2px solid transparent;
       transition: all 0.2s;
     }
 
     a:hover {
-      background: var(--primary-red);
-      color: white;
-      border-bottom-style: solid;
-      border-radius: 4px;
+      color: #d35400;
+      border-bottom-color: var(--primary-yellow);
+    }
+
+    .btn-link {
+      display: inline-block;
+      background: linear-gradient(45deg, var(--primary-red), #ff7675);
+      color: white !important;
+      padding: 10px 20px;
+      border-radius: 25px;
+      margin: 5px 0;
+      box-shadow: 0 4px 15px rgba(255, 65, 54, 0.3);
+      border: none;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .btn-link:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(255, 65, 54, 0.4);
+      border-bottom: none;
     }
 
     /* Images */
-    .img-container {
-      margin: 20px 0;
+    .entry-img {
+      max-width: 100%;
+      height: auto;
       border-radius: 15px;
-      overflow: hidden;
-      border: 3px solid var(--primary-red);
-      box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+      margin: 20px 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       transition: transform 0.3s;
     }
-
-    .img-container:hover {
-      transform: scale(1.05);
+    
+    .entry-img:hover {
+      transform: scale(1.02);
     }
 
-    img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* RSA Tool Styles */
-    .rsa-tool {
-      background: #fff;
-      padding: 20px;
+    /* RSA Widget Styles */
+    .rsa-widget {
+      background: #f8f9fa;
+      border: 2px dashed var(--primary-red);
       border-radius: 15px;
-      border: 2px solid var(--primary-red);
+      padding: 20px;
       margin-top: 20px;
     }
 
-    input[type="text"] {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid var(--primary-yellow);
-      border-radius: 10px;
-      font-family: 'Comfortaa', cursive;
-      font-size: 1.1rem;
+    .rsa-input-group {
       margin-bottom: 15px;
-      outline: none;
+    }
+
+    .rsa-input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .rsa-input-group input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
       transition: border-color 0.3s;
     }
 
-    input[type="text"]:focus {
-      border-color: var(--primary-red);
+    .rsa-input-group input:focus {
+      border-color: var(--primary-yellow);
+      outline: none;
     }
 
-    .btn-group {
+    .rsa-buttons {
       display: flex;
       gap: 10px;
-      margin-bottom: 15px;
     }
 
-    button {
+    .rsa-btn {
       flex: 1;
-      padding: 12px;
+      padding: 10px;
       border: none;
-      border-radius: 10px;
-      font-family: 'Comfortaa', cursive;
+      border-radius: 8px;
       font-weight: bold;
-      font-size: 1.1rem;
       cursor: pointer;
-      transition: transform 0.1s, box-shadow 0.1s;
-      text-transform: uppercase;
-    }
-
-    .btn-encrypt {
-      background: var(--primary-red);
+      transition: transform 0.2s;
       color: white;
-      box-shadow: 0 4px 0 #b71c1c;
     }
 
-    .btn-decrypt {
-      background: var(--primary-yellow);
-      color: var(--dark-red);
-      box-shadow: 0 4px 0 #fbc02d;
-    }
+    .btn-encrypt { background: var(--primary-red); }
+    .btn-decrypt { background: var(--dark-red); }
 
-    button:active {
-      transform: translateY(4px);
-      box-shadow: none;
-    }
+    .rsa-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+    .rsa-btn:active { transform: translateY(0); }
 
     #output {
-      background: #f5f5f5;
+      background: #333;
+      color: #0f0;
       padding: 15px;
-      border-radius: 10px;
-      font-family: monospace;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      margin-top: 15px;
       white-space: pre-wrap;
-      border: 1px solid #ddd;
+      font-size: 0.9rem;
     }
 
     /* Animations */
-    @keyframes slideDown {
-      from { transform: translateY(-50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-      100% { transform: translateY(0px); }
-    }
-
-    .floating {
-      animation: float 3s ease-in-out infinite;
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Responsive */
     @media (max-width: 600px) {
-      h1 { font-size: 3rem; }
-      .timeline-item { padding: 20px; }
+      h1 { font-size: 2.5rem; }
+      .entry { margin-left: 30px; padding: 20px; }
+      .timeline::before { left: 10px; }
+      .entry::before { left: -29px; width: 16px; height: 16px; }
     }
   </style>
 </head>
 <body>
 
-  <canvas id="bg-canvas"></canvas>
-
   <div class="container">
     <header>
       <h1>Мой Блог</h1>
-      <p style="color: white; font-weight: bold; font-size: 1.2rem;">Красно-желтая вселенная</p>
+      <div class="subtitle">stratDaria.github.io</div>
     </header>
 
-    <!-- 14 января, 2026 -->
-    <article class="timeline-item">
-      <div class="date-badge">14 января, 2026</div>
-      <h2>Информация о сайте</h2>
-      <p>Домен: <strong>stratDaria.github.io</strong></p>
-      <p>Связь: <a href="mailto:alpopopou@gmail.com">Напишите мне на почту</a></p>
-    </article>
+    <div class="timeline">
 
-    <!-- 20 декабря, 2025 -->
-    <article class="timeline-item">
-      <div class="date-badge">20 декабря, 2025</div>
-      <h2>Праздничное настроение</h2>
-      <p>Поздравляю с наступающим Рождеством 2026!</p>
-      <p>🎁 <a href="ПОЗДРАВЛЕНИЕ С РОЖДЕСТВОМ!!!.odt" download>Скачать ПОЗДРАВЛЕНИЕ С РОЖДЕСТВОМ!!!</a></p>
-      <p>🎄 Посмотрите видео с колядкой: <a href="newTree.mp4.xspf">Колядка (Видео)</a></p>
-    </article>
-
-    <!-- 1 декабря, 2025 -->
-    <article class="timeline-item">
-      <div class="date-badge">1 декабря, 2025</div>
-      <h2>Новый год</h2>
-      <p>Поздравление с Наступающим 2026 годом читайте <a href="Congratulations2026.html">здесь</a>.</p>
-    </article>
-
-    <!-- 15 октября, 2025 -->
-    <article class="timeline-item">
-      <div class="date-badge">15 октября, 2025</div>
-      <h2>Кроссворды</h2>
-      <p>Я сделала Новогодние кроссворды для сайта <a href="http://ksophia976.github.io/dem.github.jo/index.html" target="_blank">Сайт моего друга</a>.</p>
-      <div style="background: rgba(255,255,255,0.5); padding: 15px; border-radius: 10px; margin-top: 10px;">
-        <a href="krossvordRU.html">🇷🇺 Русский кроссворд</a> | 
-        <a href="krossvordEN.html">🇬🇧 Английский кроссворд</a>
-      </div>
-    </article>
-
-    <!-- 1 сентября, 2025 -->
-    <article class="timeline-item">
-      <div class="date-badge">1 сентября, 2025</div>
-      <h2>Начало пути</h2>
-      <blockquote>Путешествие в тысячу миль начинается с одного шага (Лао Цзы)</blockquote>
-      <p>Оставляю в прошлом скучную неинтересную локальную файловую систему ради Всемирной паутины.</p>
-      
-      <div class="img-container floating">
-        <!-- Placeholder image for the gift -->
-        <img src="https://images.unsplash.com/photo-1512909006721-3d6018887383?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Рождественский подарок">
+      <!-- 14 января, 2026 -->
+      <div class="entry" style="animation-delay: 0.1s;">
+        <div class="date-badge">14 января, 2026</div>
+        <p>Добро пожаловать на мой новый сайт!</p>
+        <a href="mailto:alpopopou@gmail.com" class="btn-link">Напишите мне ✉️</a>
       </div>
 
-      <p style="font-size: 0.9rem; margin-top: 10px;">
-        Иконки: <a href="https://www.flaticon.com/ru/free-icons/-" title="рождественские элементы иконки">Рождественские элементы иконки от Luch Phou - Flaticon</a>
-      </p>
-    </article>
-
-    <!-- 19 января, 2026 -->
-    <article class="timeline-item">
-      <div class="date-badge">19 января, 2026</div>
-      <h2>Шифр Цезаря</h2>
-      <h3>1. Ключи шифра</h3>
-      <p>а. АПЕЛЬСИН → САЦЬНВЩЮ → <strong>k = 17</strong></p>
-      <p>б. АБРИКОС → ЫЬЛГЕЙМ → <strong>k = 27</strong></p>
-
-      <h3>2. Расшифровка</h3>
-      <p>а. ФХНЗКЧ → <strong>ПРИВЕТ</strong></p>
-      <p>б. ЦЩЕБФ → <strong>ВЕСНА</strong></p>
-
-      <h3>3. Шифрование имени</h3>
-      <p><strong>ЫЬЪКЬШЧ ОКЪЖЙ</strong></p>
-    </article>
-
-    <!-- 21 января, 2026 -->
-    <article class="timeline-item">
-      <div class="date-badge">21 января, 2026</div>
-      <h2>RSA Шифрование</h2>
-      <p>Учебный пример. Пусть сообщение m = 2 означает «анализ готов».</p>
-      <p>Открытый ключ: (e = 3, n = 15)<br>Закрытый ключ: d = 3</p>
-
-      <div class="rsa-tool">
-        <label>Введите m (шифровать) или C (расшифровать):</label>
-        <input type="text" id="rsa-input" value="2">
+      <!-- 19 января, 2026 -->
+      <div class="entry" style="animation-delay: 0.2s;">
+        <div class="date-badge">19 января, 2026</div>
+        <h2>Криптография: Шифр Цезаря</h2>
         
-        <div class="btn-group">
-          <button class="btn-encrypt" onclick="encryptRSA()">Зашифровать</button>
-          <button class="btn-decrypt" onclick="decryptRSA()">Расшифровать</button>
+        <h3>1. Ключи шифра</h3>
+        <p>а. АПЕЛЬСИН → САЦЬНВЩЮ → <strong>k = 17</strong></p>
+        <p>б. АБРИКОС → ЫЬЛГЕЙМ → <strong>k = 27</strong></p>
+
+        <h3>2. Расшифровка</h3>
+        <p>а. ФХНЗКЧ → <strong>ПРИВЕТ</strong></p>
+        <p>б. ЦЩЕБФ → <strong>ВЕСНА</strong></p>
+
+        <h3>3. Шифрование имени</h3>
+        <p><strong>ЫЬЪКЬШЧ ОКЪЖЙ</strong></p>
+      </div>
+
+      <!-- 21 января, 2026 -->
+      <div class="entry" style="animation-delay: 0.3s;">
+        <div class="date-badge">21 января, 2026</div>
+        <h2>RSA Шифрование</h2>
+        <p>Учебный пример работы алгоритма RSA.</p>
+        <p>Открытый ключ: (e = 3, n = 15)<br>Закрытый ключ: d = 3</p>
+
+        <div class="rsa-widget">
+          <div class="rsa-input-group">
+            <label>Введите число (m для шифрования или C для расшифровки):</label>
+            <input type="number" id="rsa-input" value="2" min="0" max="14">
+          </div>
+          <div class="rsa-buttons">
+            <button class="rsa-btn btn-encrypt" onclick="rsaEncrypt()">Зашифровать 🔒</button>
+            <button class="rsa-btn btn-decrypt" onclick="rsaDecrypt()">Расшифровать 🔓</button>
+          </div>
+          <pre id="rsa-output"></pre>
         </div>
 
-        <pre id="rsa-output">Результат появится здесь...</pre>
+        <p style="margin-top: 15px; font-size: 0.8rem; opacity: 0.7;">
+          В реальности n может быть огромным числом, например: 1562738491029384756...
+        </p>
       </div>
 
-      <p style="font-size: 0.8rem; margin-top: 15px; opacity: 0.8;">
-        В реальности n намного больше: n-1562738491029384756... (очень длинное число)
-      </p>
-    </article>
-
-    <!-- 17 февраля, 2026 -->
-    <article class="timeline-item">
-      <div class="date-badge">17 февраля, 2026</div>
-      <h2>AI Предсказания</h2>
-      <p>Топ-3 предсказания модели:</p>
-      <ul style="margin-left: 20px; margin-bottom: 15px;">
-        <li>🍒 Rose hip: <strong>96.72%</strong></li>
-        <li>🫑 Bell pepper: 1.41%</li>
-        <li>🍓 Strawberry: 0.85%</li>
-      </ul>
-      <div class="img-container">
-        <img src="https://images.unsplash.com/photo-1592914610354-fd354ea45e48?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Помидор / Rose Hip">
+      <!-- 17 февраля, 2026 -->
+      <div class="entry" style="animation-delay: 0.4s;">
+        <div class="date-badge">17 февраля, 2026</div>
+        <h2>Результаты нейросети</h2>
+        <p>Топ-3 предсказания модели:</p>
+        <ul style="list-style: none; margin-bottom: 15px;">
+          <li>🥇 <strong>rose hip:</strong> 96.72%</li>
+          <li>🥈 <strong>bell pepper:</strong> 1.41%</li>
+          <li>🥉 <strong>strawberry:</strong> 0.85%</li>
+        </ul>
+        <img src="https://image.qwenlm.ai/public_source/7c1ac1fc-4c52-4a19-b5ae-86f9ab37f2cc/112c03ae8-c14d-4524-bc1d-efa0d913d1da.png" alt="Помидор" class="entry-img">
+        <p><small>Изображение сгенерировано нейросетью</small></p>
       </div>
-    </article>
 
-    <!-- 21 февраля, 2026 -->
-    <article class="timeline-item">
-      <div class="date-badge">21 февраля, 2026</div>
-      <h2>Лог чат-бота</h2>
-      <p><strong>Вопрос пользователя:</strong> Сколько ждать мой заказ?</p>
-      <p><strong>Найден FAQ-вопрос:</strong> «Как быстро доставляется заказ?» (sim=0.706)</p>
-      <p><strong>Ответ бот-FAQ:</strong> Наш стандартный срок доставки — 3–5 рабочих дней.</p>
-      <p><strong>Дополнительный вопрос:</strong> «Как оплатить заказ?»</p>
-      <p><em>Чат-бот справился с вопросом? Да, бот успешно нашел соответствующий FAQ и дал ответ по срокам доставки. По вопросу оплаты нужно проверить отдельно.</em></p>
-    </article>
+      <!-- 21 февраля, 2026 -->
+      <div class="entry" style="animation-delay: 0.5s;">
+        <div class="date-badge">21 февраля, 2026</div>
+        <h2>Лог чат-бота</h2>
+        <p><strong>Вопрос пользователя:</strong> Сколько ждать мой заказ?</p>
+        <p><strong>Найден FAQ-вопрос:</strong> «Как быстро доставляется заказ?» (sim=0.706)</p>
+        <p><strong>Ответ бот-FAQ:</strong> Наш стандартный срок доставки — 3–5 рабочих дней.</p>
+        <p><strong>Дополнительный вопрос:</strong> «Как оплатить заказ?»</p>
+        <p><em>Чат-бот справился с вопросом? Да, бот успешно нашел соответствующий FAQ и дал ответ по срокам доставки. По вопросу оплаты нужно проверить отдельно.</em></p>
+      </div>
 
+      <!-- 20 декабря, 2025 -->
+      <div class="entry" style="animation-delay: 0.6s;">
+        <div class="date-badge">20 декабря, 2025</div>
+        <h2>С наступающим Рождеством!</h2>
+        <p>Поздравляю с наступающим Рождеством 2026!</p>
+        <a href="ПОЗДРАВЛЕНИЕ С РОЖДЕСТВОМ!!!.odt" class="btn-link" download>📄 Скачать поздравление</a>
+        
+        <p style="margin-top: 15px;">Посмотрите видео с колядкой!:</p>
+        <a href="newTree.mp4.xspf" class="btn-link" style="background: linear-gradient(45deg, #2ecc71, #27ae60);">🎄 Смотреть Колядку</a>
+      </div>
+
+      <!-- 1 декабря, 2025 -->
+      <div class="entry" style="animation-delay: 0.7s;">
+        <div class="date-badge">1 декабря, 2025</div>
+        <h2>Новый Год</h2>
+        <p>Поздравление с Наступающим 2026 годом читайте здесь:</p>
+        <a href="Congratulations2026.html" class="btn-link">🎉 Читать поздравление</a>
+      </div>
+
+      <!-- 15 октября, 2025 -->
+      <div class="entry" style="animation-delay: 0.8s;">
+        <div class="date-badge">15 октября, 2025</div>
+        <h2>Кроссворды</h2>
+        <p>Я сделала Новогодние кроссворды для сайта <a href="http://ksophia976.github.io/dem.github.jo/index.html" target="_blank">Сайт моего друга</a>.</p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="krossvordRU.html" class="btn-link">🇷🇺 Русский кроссворд</a>
+          <a href="krossvordEN.html" class="btn-link">🇬🇧 Английский кроссворд</a>
+        </div>
+      </div>
+
+      <!-- 1 сентября, 2025 -->
+      <div class="entry" style="animation-delay: 0.9s;">
+        <div class="date-badge">1 сентября, 2025</div>
+        <blockquote>«Путешествие в тысячу миль начинается с одного шага» — Лао Цзы</blockquote>
+        <p>Оставляю в прошлом скучную неинтересную локальную файловую систему ради Всемирной паутины.</p>
+        
+        <img src="https://image.qwenlm.ai/public_source/7c1ac1fc-4c52-4a19-b5ae-86f9ab37f2cc/15fe7ecf8-44d2-492a-9a7f-e1c1d492b7b6.png" alt="Рождественский подарок" class="entry-img">
+        
+        <p style="font-size: 0.8rem; margin-top: 10px;">
+          Иконки и изображения: <a href="https://www.flaticon.com/" target="_blank">Flaticon</a> & AI Generated
+        </p>
+      </div>
+
+    </div>
   </div>
 
   <script>
-    // --- RSA Logic ---
-    const e = 3;
-    const d = 3;
-    const n = 15;
+    // RSA Logic scoped to avoid conflicts
+    const rsaE = 3;
+    const rsaD = 3;
+    const rsaN = 15;
 
     function modExp(base, exp, mod) {
       let result = 1;
@@ -424,109 +481,63 @@
       return result;
     }
 
-    function encryptRSA() {
-      const input = document.getElementById('rsa-input').value.trim();
+    function rsaEncrypt() {
+      const inputVal = document.getElementById('rsa-input').value.trim();
       const outputEl = document.getElementById('rsa-output');
       
-      if (input === '') {
+      if (inputVal === '') {
         outputEl.innerText = 'Ошибка: введите сообщение m.';
+        outputEl.style.color = '#ff6b6b';
         return;
       }
-      const m = Number(input);
+      
+      const m = Number(inputVal);
       if (!Number.isInteger(m) || m < 0) {
         outputEl.innerText = 'Ошибка: m должно быть целым неотрицательным числом.';
+        outputEl.style.color = '#ff6b6b';
         return;
       }
-      if (m >= n) {
-        outputEl.innerText = 'Ошибка: m должно быть меньше n (m < 15).';
+      if (m >= rsaN) {
+        outputEl.innerText = `Ошибка: m должно быть меньше n (m < ${rsaN}).`;
+        outputEl.style.color = '#ff6b6b';
         return;
       }
-      const C = modExp(m, e, n);
-      outputEl.innerText = 'Шифрование:\n' +
-        'C = m^e mod n = ' + m + '^' + e + ' mod ' + n + ' = ' + C;
+      
+      const C = modExp(m, rsaE, rsaN);
+      outputEl.style.color = '#0f0';
+      outputEl.innerText = 
+        'Шифрование:\n' +
+        'C = m^e mod n = ' + m + '^' + rsaE + ' mod ' + rsaN + ' = ' + C;
     }
 
-    function decryptRSA() {
-      const input = document.getElementById('rsa-input').value.trim();
+    function rsaDecrypt() {
+      const inputVal = document.getElementById('rsa-input').value.trim();
       const outputEl = document.getElementById('rsa-output');
 
-      if (input === '') {
+      if (inputVal === '') {
         outputEl.innerText = 'Ошибка: введите шифротекст C.';
+        outputEl.style.color = '#ff6b6b';
         return;
       }
-      const C = Number(input);
+      
+      const C = Number(inputVal);
       if (!Number.isInteger(C) || C < 0) {
         outputEl.innerText = 'Ошибка: C должно быть целым неотрицательным числом.';
+        outputEl.style.color = '#ff6b6b';
         return;
       }
-      if (C >= n) {
-        outputEl.innerText = 'Ошибка: C должно быть меньше n (C < 15).';
+      if (C >= rsaN) {
+        outputEl.innerText = `Ошибка: C должно быть меньше n (C < ${rsaN}).`;
+        outputEl.style.color = '#ff6b6b';
         return;
       }
-      const m = modExp(C, d, n);
-      outputEl.innerText = 'Расшифровка:\n' +
-        'm = C^d mod n = ' + C + '^' + d + ' mod ' + n + ' = ' + m;
+      
+      const m = modExp(C, rsaD, rsaN);
+      outputEl.style.color = '#0f0';
+      outputEl.innerText = 
+        'Расшифровка:\n' +
+        'm = C^d mod n = ' + C + '^' + rsaD + ' mod ' + rsaN + ' = ' + m;
     }
-
-    // --- Particle Background Effect ---
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let particles = [];
-
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 2;
-        this.vy = (Math.random() - 0.5) * 2;
-        this.size = Math.random() * 10 + 5;
-        this.color = Math.random() > 0.5 ? '#ffea00' : '#ff0000';
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if (this.x < 0 || this.x > width) this.vx *= -1;
-        if (this.y < 0 || this.y > height) this.vy *= -1;
-      }
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    function initParticles() {
-      particles = [];
-      for (let i = 0; i < 50; i++) {
-        particles.push(new Particle());
-      }
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animate);
-    }
-
-    window.addEventListener('resize', () => {
-      resize();
-      initParticles();
-    });
-
-    resize();
-    initParticles();
-    animate();
-
   </script>
 </body>
 </html>
